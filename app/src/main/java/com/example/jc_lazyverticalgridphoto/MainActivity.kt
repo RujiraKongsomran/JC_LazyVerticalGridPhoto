@@ -3,41 +3,55 @@ package com.example.jc_lazyverticalgridphoto
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.jc_lazyverticalgridphoto.ui.theme.JC_LazyVerticalGridPhotoTheme
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import com.example.jc_lazyverticalgridphoto.model.Photo
+import com.example.jc_lazyverticalgridphoto.repository.PhotoRepository
 
+@ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JC_LazyVerticalGridPhotoTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            val personRepository = PhotoRepository()
+            val getAllData = personRepository.getAllData()
+            PhotoGrid(photos = getAllData)
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun PhotoItem(photo: Photo) {
+    Image(
+        painter = rememberImagePainter(
+            data = photo.imageUrl,
+            builder = {
+                crossfade(true)
+            }
+        ),
+        contentDescription = null,
+        modifier = Modifier.size(128.dp),
+        contentScale = ContentScale.Crop,
+    )
 }
 
-@Preview(showBackground = true)
+@ExperimentalFoundationApi
 @Composable
-fun DefaultPreview() {
-    JC_LazyVerticalGridPhotoTheme {
-        Greeting("Android")
+fun PhotoGrid(photos: List<Photo>) {
+    LazyVerticalGrid(
+        cells = GridCells.Adaptive(minSize = 128.dp),
+    ) {
+        items(items = photos) { photo ->
+            PhotoItem(photo = photo)
+        }
     }
 }
