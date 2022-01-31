@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.jc_lazyverticalgridphoto.data.remote.PhotosService
 import com.example.jc_lazyverticalgridphoto.model.Photo
-import com.example.jc_lazyverticalgridphoto.repository.PhotoRepository
 import com.example.jc_lazyverticalgridphoto.ui.theme.JC_LazyVerticalGridPhotoTheme
 
 @ExperimentalFoundationApi
